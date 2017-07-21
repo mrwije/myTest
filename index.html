@@ -1,37 +1,18 @@
-<!doctype html>
-<html lang="en">
-<head>
-  	<meta charset="utf-8">
-  	<title>WLC 2022</title>
-
-  	<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>--><!-- make it local -->
-    <script src="../../../../lib/js/jquery-1.11.0.min.js"></script><!-- make it local -->
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>--><!-- make it local -->
-    <script src="../../../../lib/js/jquery-ui.js"></script><!-- make it local -->
-    <script type="text/javascript" src="js/massrel.js"></script>
-    <link href="css/style.css" rel="stylesheet" type="text/css">
-</head>
-
-<body>
-  <div id="container">
-    <div id="slideshow">
-      	<div id="stream">  </div>
-      	<div id="stream24"> </div>
-    </div>
-    <img id="banner" src="img/banner.jpg"/>
-  </div>
-
-
-
-</body>
-	<script>
-		var image = '<img src="../../../../development/tharaka/conv/wlc2017/img/dedicated.jpg"/>'; // Replace with custom Instagram/Twitter Logo (270x270)
-		var avatar_size = "_normal";	// Specifiy the avatar size of twitter posts.
-		var stream  = new massrel.Stream('mgmmediamonkey/lv-corp-mgmleads01');  //Instagram/twitter image
-		var stream2 = new massrel.Stream('mgmmediamonkey/lv-corp-mgmleads02'); // twitter texts
-	</script>
-
-<script type="text/javascript" src="js/TweenMax.min.js"></script>
-<script type="text/javascript" src="js/instagram.js"></script>
-
-</html>
+<h1>Handlebars JS Example</h1>
+<script id="some-template" type="text/x-handlebars-template"> <table>
+    <thead> 
+        <th>Name</th> 
+        <th>Job Title</th> 
+        <th>Twitter</th> 
+    </thead> 
+    <tbody> 
+        {{#users}} 
+        <tr> 
+            <td>{{fullName person}}</td> 
+            <td>{{jobTitle}}</td> 
+            <td><a href="https://twitter.com/{{twitter}}">@{{twitter}}</a></td> 
+        </tr> 
+        {{/users}} 
+    </tbody> 
+</table> 
+</script>
