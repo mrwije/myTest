@@ -4,22 +4,22 @@ var template = Handlebars.compile(source);
 var data = { 
     users: [ { 
         person: {
-            firstName: "Garry", 
-            lastName: "Finch"
+            firstName: "Tharaka", 
+            lastName: "Wije"
         },
         jobTitle: "Front End Technical Lead",
         twitter: "gazraa" 
     }, {
         person: {
-            firstName: "Garry", 
-            lastName: "Finch"
+            firstName: "Tharaka", 
+            lastName: "W"
         }, 
         jobTitle: "Photographer",
         twitter: "photobasics"
     }, {
         person: {
-            firstName: "Garry", 
-            lastName: "Finch"
+            firstName: "Tharaka", 
+            lastName: "S"
         }, 
         jobTitle: "LEGO Geek",
         twitter: "minifigures"
