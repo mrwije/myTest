@@ -17,49 +17,49 @@
 
 <body>
 
-<div id = "quoteData"></div>
+<div id = "quoteDataDOM"></div> <!--1. div to be appended info to.-->
 
-<script id="quote-template" type="text/x=handlebars-template">
+<script id="quote-template" type="text/x=handlebars-template"><!--To seperate the javascript template from handlebar template-->
   
-<h3>Favorite {{name}} Quotes</h3>
+<h3>Favorite {{name}} Quotes</h3> <!--2Structure of data to appear on the scree-->
 <ol>
-{{#each quotes}}
+{{#each quotes}} <!--Cycles through the arrays of data-->
 <li>{{quote}}
 {{/each}}
 </ol>
 
-{{{yogiBio}}}<br /><br />
-{{makeLink "Yogi Berra Museum" "http://yogiberramuseum.org/"}}<br />
+{{{yogiBio}}}<br /><br /> <!--Will use the tags ex: <i>-->
+{{makeLink "TZAP" "https://en.wikipedia.org/wiki/ZBTB48"}}<br /> <!--Dont need three curly braces-->
 
 </script>
 
 <script type="text/javascript">
 
-var quoteInfo = document.getElementById("quote-template").innerHTML;
+var quoteInfo = document.getElementById("quote-template").innerHTML;//Gets the Structure and store it into a variable.
 
-var template = Handlebars.compile(quoteInfo);
+var template = Handlebars.compile(quoteInfo);//3. Joins the data in javascript with the html.
 
-Handlebars.registerHelper("makeLink", function(text, url){
-	text = Handlebars.Utils.escapeExpression(text);
-	url = Handlebars.Utils.escapeExpression(url);
+Handlebars.registerHelper("makeLink", function(text, url){//Helper function. Keyword registerHelper.
+	text = Handlebars.Utils.escapeExpression(text);//escapeExpression should be always used.
+	url = Handlebars.Utils.escapeExpression(url);//escapeExpression should be always used.
 
-	var theLink = '<a href = "' + url + '">' + text + '</a>';
+	var theLink = '<a href = "' + url + '">' + text + '</a>';//Custom link.
 
 	return new Handlebars.SafeString(theLink);
 });
 
-var quoteData = template({
-	name: "Yogi Berra",
+var quoteData = template({//4. Give values to the structure.
+	name: "Yoda",
 	quotes: [
-	{quote: "If you don't know where you are going, you might wind up someplace else."},
-	{quote: "You better cut the pizza in four pieces because I'm not hungry enough to eat six"},
-	{quote: "I never said most of the things I said."},
-	{quote: "Nobody goes there anymore because it's too crowded."}
+	{quote: "Train yourself to let go of everything you fear to lose"},
+	{quote: "Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering."},
+	{quote: "Always pass on what you have learned."},
+	{quote: "I never said most of the things I said."}
 	],
-	yogiBio: '<i>details are important Yogi Berra. Yogi is an American professional baseball catcher.</i>'
+	yogiBio: '<i>Details are important Yoda. One of the above quotes are not mine.</i>'
 });
 
-document.getElementById("quoteData").innerHTML += quoteData;
+document.getElementById("quoteDataDOM").innerHTML += quoteData;//5. Append the data to the div to be appended.
 
 </script>
 
