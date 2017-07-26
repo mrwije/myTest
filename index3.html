@@ -31,6 +31,10 @@
 {{{yogiBio}}}<br /><br /> <!--Will use the tags ex: <i>-->
 {{makeLink "TZAP" "https://en.wikipedia.org/wiki/ZBTB48"}}<br /> <!--Dont need three curly braces-->
 
+{{changeColor "Make my text red" color="red"}}<br />
+
+{{sayHello}}
+
 </script>
 
 <script type="text/javascript">
@@ -48,6 +52,31 @@ Handlebars.registerHelper("makeLink", function(text, url){//Helper function. Key
 	return new Handlebars.SafeString(theLink);
 });
 
+Handlebars.registerHelper("changeColor", function(text, options){
+	text = Handlebars.Utils.escapeExpression(text);
+
+	if(options.hash.color === "red") {
+		return new Handlebars.SafeString("<span class ='redText'>" + text + "</span>");
+	} else if(options.hash.color === "blue") {
+		return new Handlebars.SafeString("<span class ='blueText'>" + text + "</span>");
+	} else {
+		return new Handlebars.SafeString("<span class ='greenText'>" + text + "</span>");
+	}
+});
+
+Handlebars.registerHelper("sayHello", function(options){
+	switch(options.data.lang){
+		case "spanish":
+			return "Hola";
+			break;
+		case "french":
+			return "Bonjour";
+			break;
+		default:
+			return "Hello";
+	}
+});
+
 var quoteData = template({//4. Give values to the structure.
 	name: "Yoda",
 	quotes: [
@@ -57,6 +86,9 @@ var quoteData = template({//4. Give values to the structure.
 	{quote: "I never said most of the things I said."}
 	],
 	yogiBio: '<i>Details are important Yoda. One of the above quotes are not mine.</i>'
+}, {data:{
+	lang: "french"
+	}	
 });
 
 document.getElementById("quoteDataDOM").innerHTML += quoteData;//5. Append the data to the div to be appended.
