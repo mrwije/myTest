@@ -1,24 +1,86 @@
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
+  <title>Hello Handlebars</title>
 
-  <title>Handlebar Json Data</title>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint">
+<style type = "text/css">
+  .redText {color: red;}
+  .blueText {color: blue;}
+  .greenText {color: green;}
+</style>
 
-  <link rel="stylesheet" href="style.css?v=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
 
-  <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-  <![endif]-->
+
+
 </head>
 
 <body>
-<script id="some-template" type="text/x-handlebars-template"> <table>
+
+<div id = "quoteDataDOM"></div> <!--1. div to be appended info to.-->
+
+<script id="quote-template" type="text/x=handlebars-template"><!--To seperate the javascript template from handlebar template-->
+  
+<h3>Favorite {{name}} Quotes</h3> <!--2Structure of data to appear on the scree-->
+<ol>
+{{#each quotes}} <!--Cycles through the arrays of data-->
+<li>{{quote}}
+{{/each}}
+</ol>
+
+{{{yogiBio}}}<br /><br /> <!--Will use the tags ex: <i>-->
+{{makeLink "TZAP" "https://en.wikipedia.org/wiki/ZBTB48"}}<br /> <!--Dont need three curly braces-->
+
+{{changeColor "Make my text red" color="red"}}<br />
+
+{{sayHello}}
 
 </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-  <script src="script.js"></script>
+
+<script type="text/javascript">
+
+var quoteInfo = document.getElementById("quote-template").innerHTML;//Gets the Structure and store it into a variable.
+
+var template = Handlebars.compile(quoteInfo);//3. Joins the data in javascript with the html.
+
+Handlebars.registerHelper("makeLink", function(text, url){//Helper function. Keyword registerHelper.
+  text = Handlebars.Utils.escapeExpression(text);//escapeExpression should be always used.
+  url = Handlebars.Utils.escapeExpression(url);//escapeExpression should be always used.
+
+  var theLink = '<a href = "' + url + '">' + text + '</a>';//Custom link.
+
+  return new Handlebars.SafeString(theLink);
+});
+
+Handlebars.registerHelper("changeColor", function(text, options){
+  text = Handlebars.Utils.escapeExpression(text);
+
+  if(options.hash.color === "red") {
+    return new Handlebars.SafeString("<span class ='redText'>" + text + "</span>");
+  } else if(options.hash.color === "blue") {
+    return new Handlebars.SafeString("<span class ='blueText'>" + text + "</span>");
+  } else {
+    return new Handlebars.SafeString("<span class ='greenText'>" + text + "</span>");
+  }
+});
+
+Handlebars.registerHelper("sayHello", function(options){
+  switch(options.data.lang){
+    case "spanish":
+      return "Hola";
+      break;
+    case "french":
+      return "Bonjour";
+      break;
+    default:
+      return "Hello";
+  }
+});
+
+
+document.getElementById("quoteDataDOM").innerHTML += quoteData;//5. Append the data to the div to be appended.
+
+</script>
+
 </body>
 </html>
