@@ -45,7 +45,7 @@ console.log(stream2);
 		if ( index_instagram >= content_limit ) {
 			index_instagram = 0;
 		}
-
+	
 		if ( status.network === 'twitter') {
 
 			if ( seconds <= new Date(status.created_at).getTime()/1000 ) { 
@@ -80,6 +80,8 @@ console.log(stream2);
 				// console.log('less than a week');
 				instagram_array[index_instagram] = status;
 				index_instagram++;
+				// twitter_array[index_twitter] = status;
+				// index_twitter++;
 			}
 
 			
@@ -120,8 +122,8 @@ console.log(stream2);
 	}).start();
 
 	function createInstagramNode(node, className, idName) {
-		// console.log(node.caption.text);
 		// console.log(node);
+		// console.log(node.caption.text);
 		// console.log(className);
 		// console.log(idName);
 		var div = document.createElement('div');
@@ -131,47 +133,54 @@ console.log(stream2);
 
 		// text.className = 'text-caption';
 		// user.className = 'user-caption';
-
-			
-
+		// console.log(instagram_array.length);
+		// if(node.network == "instagram")	{
+		if(node.images.low_resolution){
 		div.innerHTML = '<img src="'+ node.images.low_resolution.url +'" onerror="imgError(this)"/>';
-		
+		user.innerHTML = '<div class="user-holder"><div class="instagram-actualname">' + '</div><div class="instagram-username">@' +  node.user.username + '</p><div class="icon-instagram_logo"/></div>';
 		// console.log(node);
-		if (node.caption.text) {
-			// user.innerHTML = '<div class="user-holder"><img src="' + node.user.profile_picture + '"/><div class="instagram-actualname">' +  node.user.full_name +'</div><div class="inatagram-username">@' +  node.user.username +'</div><p class="user-text">' + node.caption.text + '</p><img class="logowithtext" src="../../../../lib/img/logo_instagram_white.png"/></div>';
-			// user.innerHTML = '<div class="user-holder"><div class="instagram-actualname">' +  node.user.full_name +'</div><div class="instagram-username">@' +  node.user.username +'</div><p class="user-text">' + node.caption.text + '</p><div class="icon-instagram_logo"/></div>';
-			user.innerHTML = '<div class="user-holder"><div class="instagram-actualname">' + '</div><div class="instagram-username">@' +  node.user.username + '</p><div class="icon-instagram_logo"/></div>';
-		} else {
-			user.innerHTML = '<div class="user-holder"><img src="' + node.user.profile_picture + '" onerror="imgError(this)"/>'+'<div class="user-caption">' +  node.user.username +'</div><img class="logo" src="../../../../lib/img/twitter.png"/></div>';// if no texts in instagram but twitter shows up...
-		}
+		// if (node.caption.text) {
+		// 	// user.innerHTML = '<div class="user-holder"><img src="' + node.user.profile_picture + '"/><div class="instagram-actualname">' +  node.user.full_name +'</div><div class="inatagram-username">@' +  node.user.username +'</div><p class="user-text">' + node.caption.text + '</p><img class="logowithtext" src="../../../../lib/img/logo_instagram_white.png"/></div>';
+		// 	// user.innerHTML = '<div class="user-holder"><div class="instagram-actualname">' +  node.user.full_name +'</div><div class="instagram-username">@' +  node.user.username +'</div><p class="user-text">' + node.caption.text + '</p><div class="icon-instagram_logo"/></div>';
+		// 	user.innerHTML = '<div class="user-holder"><div class="instagram-actualname">' + '</div><div class="instagram-username">@' +  node.user.username + '</p><div class="icon-instagram_logo"/></div>';
+		// } else {
+		// 	// user.innerHTML = '<div class="user-holder"><img src="' + node.user.profile_picture + '" onerror="imgError(this)"/>'+'<div class="user-caption">' +  node.user.username +'</div><img class="logo" src="../../../../lib/img/twitter.png"/></div>';// To show twitter images in the intagram images field
+		// }
 
 
 
 		div.className = className;
 		div.appendChild(user);
+	}else{
 
+	}
 		return div;
 	}
 
 	function createTwitterNode(node, className, idName) {
+		var div = document.createElement('div');
+		var html = '';	// HTML text holder.
+		var hashtag_link;
+		var hashtag_text;
+		var hashtag_array = [];
+		var twitterPic, avatar_url;
 		
-		console.log(node);
-		if(node.entities.media){
+			// console.log(node);
 			// console.log(node.entities.media[0].media_url);
-			var div = document.createElement('div');
-			var html = '';	// HTML text holder.
-			var twitterPic = node.entities.media[0].media_url;
-			console.log("******************");
-			console.log(twitterPic);
-
-			var hashtag_link;
-			var hashtag_text;
-			var hashtag_array = [];
-			var avatar_url = node.user.profile_image_url;	// get user avatar.
-			console.log(avatar_url);
+			// var div = document.createElement('div');
+			// var html = '';	// HTML text holder.
+			twitterPic = node.entities.media[0].media_url;
+			// console.log("******************");
+			// console.log(twitterPic);
+			// console.log(twitter_array.length);
+			// var hashtag_link;
+			// var hashtag_text;
+			// var hashtag_array = [];
+			avatar_url = node.user.profile_image_url;	// get user avatar.
+			// console.log(avatar_url);
 			avatar_url = avatar_url.replace("_normal", avatar_size); // replace the image size if necessary.
 			hashtag_array = node.entities.hashtags;	// get hashtags in the tweet.
-
+			
 			for (l = 0; l < hashtag_array.length; l++) {
 			// Wrap each hashtag in .hashtag class.
 				hashtag_text = "#"+node.entities.hashtags[l].text;
@@ -192,7 +201,7 @@ console.log(stream2);
 			
 			
 			div.innerHTML = html;	// add html to div
-		} else {
+		
 			// var div = document.createElement('div');
 			// var html = '';	// HTML text holder.
 			// var hashtag_link;
@@ -222,9 +231,9 @@ console.log(stream2);
 			
 			
 			// div.innerHTML = html;	// add html to div
-		}
+	
 		return div;
-		
+
 	}
 
 	function createNode (className){//not called 
@@ -241,8 +250,60 @@ console.log(stream2);
 			array[i] = null;
 		}
 	}
+	// function slide(stream)
+	// 	// console.log(stream);
+	// 	var i = 0;
+	// 	var j = 0;
+
+	// 	var i_instagram = 0;
+	// 	var i_twitter = 0;
+
+	// 	var instagram;
+	// 	var twitter;
+
+	// 	for (i = 0; i < expected_content; i++) {
+	// 		if (i_instagram >= instagram_array.length) {
+	// 			i_instagram = 0;
+	// 		}
+
+	// 		if (i_twitter >= twitter_array.length) {
+	// 			i_twitter = 0;
+	// 		}
+	// 		// console.log(instagram_array[i_instagram]);
+	// 		instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
+	// 		$(stream).append(instagram);
+	// 		if ($(window).width() < 1920) {		
+	// 			if ( i === (expected_content%2) + 4) {
+	// 				// Replace this section with dedicated hashtag node if required
+	// 				twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
+	// 				$(stream).append(twitter);
+	// 			}
+
+	// 			twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
+	// 			$(stream).append(twitter);
+
+	// 			i_instagram++;
+	// 			i_twitter++;
+	// 		} else if(($(window).width() >= 1920)) {
+	// 			if ( i === (expected_content%2) + 7 ) {
+	// 				// Replace this section with dedicated hashtag node if required
+	// 				twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
+	// 				$(stream).append(twitter);
+	// 			}
+
+	// 			twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
+	// 			$(stream).append(twitter);
+
+	// 			i_instagram++;
+	// 			i_twitter++;
+	// 		}
+
+	// 	}
+
+	// 	$(stream).animate({opacity: 1}, 1000);
+	// }
+
 	function slide(stream) {
-		// console.log(stream);
 		var i = 0;
 		var j = 0;
 
@@ -251,6 +312,7 @@ console.log(stream2);
 
 		var instagram;
 		var twitter;
+		// console.log(instagram_array.length);
 		for (i = 0; i < expected_content; i++) {
 			if (i_instagram >= instagram_array.length) {
 				i_instagram = 0;
@@ -259,44 +321,43 @@ console.log(stream2);
 			if (i_twitter >= twitter_array.length) {
 				i_twitter = 0;
 			}
-			// console.log(instagram_array[i_instagram]);
-			instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
-			$(stream).append(instagram);
-			if ($(window).width() < 1920) {			
-				if ( i === (expected_content%2) + 4) {
-					// Replace this section with dedicated hashtag node if required
-					twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-					$(stream).append(twitter);
-				}
-
-				twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-				$(stream).append(twitter);
-
-				i_instagram++;
-				i_twitter++;
-			} else if(($(window).width() >= 1920)) {
-				if ( i === (expected_content%2) + 7) {
-					// Replace this section with dedicated hashtag node if required
-					twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-					$(stream).append(twitter);
-				}
-
-				twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-				$(stream).append(twitter);
-
-				i_instagram++;
-				i_twitter++;
+			console.log(instagram_array[i_instagram]);
+			if(instagram_array[i_instagram].images.low_resolution) {
+				
+				instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
+				$(stream).append(instagram);
 			}
 
+			if ( i === (expected_content%2) + 7) {
+			// Replace this section with dedicated hashtag node if required
+				if(twitter_array[i_twitter].entities.media){
+					twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
+				
+				$(stream).append(twitter);
+				} 
+			}
+
+			if(twitter_array[i_twitter].entities.media){
+					twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
+				
+				$(stream).append(twitter);
+				} 
+
+			i_instagram++;
+			i_twitter++;
 		}
 
 		$(stream).animate({opacity: 1}, 1000);
 	}
 
+
 	function updateSlide(position, type) {
-		// console.log(type);
-		// console.log(position);
+		console.log("updating index");
+		console.log(type);
+		console.log(position);
 		if (type) {
+			// console.log("herealot");
+		// if (type == 1) {
 			// instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
 			
 			if (update_index1 >= instagram_array.length) {
@@ -306,37 +367,46 @@ console.log(stream2);
 			$('#stream .photo').eq(position).removeClass('fade-in');
 			$('#stream2 .photo').eq(position).removeClass('fade-in');
 
-			$('#stream .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
+			// console.log(instagram_array[update_index1]);
+			// if(instagram_array[update_index1].images.low_resolution) {
+				$('#stream .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
 
-			$('#stream2 .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
-			
-			update_index1++;
+				$('#stream2 .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
+				
+				update_index1++;
+			// }
 			$('#stream .photo').eq(position).addClass('fade-in');
 			$('#stream2 .photo').eq(position).addClass('fade-in');
 
 		} else {
+		
 			if (update_index2 >= twitter_array.length) {
 				update_index2 = 0;
 			}
 
 			$('#stream .tweet').eq(position).removeClass('fade-in');
 			$('#stream2 .tweet').eq(position).removeClass('fade-in');
-			// console.log(twitter_array[update_index2]);
-			$('#stream .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
-			$('#stream2 .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
-			update_index2++;
 
-			$('#stream .tweet').eq(position).addClass('fade-in');
-			$('#stream2 .tweet').eq(position).addClass('fade-in');
+		
+			// if(twitter_array[update_index2].entities.media){
+				
+				$('#stream .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
+				$('#stream2 .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
+				update_index2++;
+			// }
+	
+			$('#stream.tweet').eq(position).addClass('fade-in');
+			$('#stream2.tweet').eq(position).addClass('fade-in');
 		}
 
 		console.log('updated');
-		console.log(position);
+		// console.log("1: " + update_index1);
+		// console.log("2: " + update_index2);
+		// console.log(position);
 	}
 
 	document.addEventListener('twitterLoaded',
 		function () {
-
 			twitter = true;
 			evt_t = null;
 
@@ -353,7 +423,6 @@ console.log(stream2);
 
 	document.addEventListener('instagramLoaded',
 		function () {
-
 			instagram = true;
 			evt_i = null;
 
@@ -369,12 +438,31 @@ console.log(stream2);
 		}
 	, false);
 
+	// window.setInterval(function(){
+	// 	// var position = Math.floor((Math.random() * expected_content));
+	// 	var node = Math.round((Math.random() * 2));
+	// 	var chance = Math.round((Math.random() * 2));
+	// 	var numAddMin = Math.round((Math.random() * 2));
+	// 	var newPosition;
+
+	// 	if(chance == 1) {
+	// 		var newPosition = (expected_content / 2) + numAddMin;
+	// 	} else {
+	// 		var newPosition = (expected_content / 2) - numAddMin;
+	// 	}
+
+	// 	updateSlide(newPosition, node);
+	// }, 5000);
+
+
+
 	window.setInterval(function(){
 		var position = Math.floor((Math.random() * expected_content));
 		var node = Math.round((Math.random() * 2));
 
 		updateSlide(position, node);
 	}, 5000);
+
 
 })();
 
