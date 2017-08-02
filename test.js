@@ -1,11 +1,11 @@
+//Twitter and Instagram are updating but slow. Fade in for twitter pics semi functional
 var instagram_array = [];
 var twitter_array = [];
-console.log(stream);
-console.log(stream2);
+// console.log(stream);
+// console.log(stream2);
 
 
 ( function () {
-	// console.log(stream);
 	var index_instagram = 0;
 	var index_twitter = 0;
 
@@ -16,11 +16,11 @@ console.log(stream2);
 	var twitter = false;
 
 	var content_limit =  100;
-	var expected_content = 16;	// tied to css, change the css for proper display
+	var expected_content = 7;	// tied to css, change the css for proper display
 
 
-	var update_index1 = 16;
-	var update_index2 = 16;
+	var update_index1 = 7;
+	var update_index2 = 7;
 
 	// populateArray(instagram_array, expected_content);
 	// populateArray(twitter_array, expected_content);
@@ -49,36 +49,48 @@ console.log(stream2);
 		if ( status.network === 'twitter') {
 
 			if ( seconds <= new Date(status.created_at).getTime()/1000 ) { 
+
 				// console.log('less than a week');
-				
-				if (status.entities.media) {
-					new_status.images = new Object();
-					new_status.images.low_resolution = new Object();
-					new_status.user = new Object();
-					new_status.images.low_resolution.url = status.entities.media[0].media_url;//twitter images
-					new_status.user.profile_picture = status.user.profile_image_url;
-					new_status.user.username = status.user.screen_name;
-					new_status.user.realname = status.user.name;
-					new_status.text = status.text;
+				// if (status.entities.media) {
+				// 	console.log();
+				// 	new_status.images = new Object();
+				// 	new_status.images.low_resolution = new Object();
+				// 	new_status.user = new Object();
+				// 	new_status.images.low_resolution.url = status.entities.media[0].media_url;//twitter images
+				// 	new_status.user.profile_picture = status.user.profile_image_url;
+				// 	new_status.user.username = status.user.screen_name;
+				// 	new_status.user.realname = status.user.name;
+				// 	new_status.text = status.text;
 					
-					instagram_array[index_instagram] = new_status;//reason the twitter images are in instagram section
-					// twitter_array[index_twitter] = new_status;
-					status = new_status;
-					// console.log(status);
-					status.caption = status.user;
-					// console.log(status);
-					index_instagram++;
-					// index_twitter++;
-				}
+				// 	instagram_array[index_instagram] = new_status;//reason the twitter images are in instagram section
+				// 	// twitter_array[index_twitter] = new_status;
+				// 	status = new_status;
+				// 	// console.log(status);
+				// 	status.caption = status.user;
+				// 	// console.log(status);
+				// 	index_instagram++;
+				// 	// index_twitter++;
+				// }
+
+				
+				// console.log('less than a week');
+				twitter_array[index_twitter] = status;
+				// console.log(twitter_array[index_twitter]);
+				index_twitter++;
+				// twitter_array[index_twitter] = status;
+				// index_twitter++;
+				
+
 			}				
 			
-		} else {
+		} else if(status.network === "instagram"){
 
 			// console.log(status.network);
 			
 			if ( seconds <= status.created_time) { 
 				// console.log('less than a week');
 				instagram_array[index_instagram] = status;
+				// console.log(instagram_array[index_instagram]);
 				index_instagram++;
 				// twitter_array[index_twitter] = status;
 				// index_twitter++;
@@ -134,8 +146,8 @@ console.log(stream2);
 		// text.className = 'text-caption';
 		// user.className = 'user-caption';
 		// console.log(instagram_array.length);
-		// if(node.network == "instagram")	{
-		if(node.images.low_resolution){
+		if(node.network == "instagram")	{
+		// if(node.images.low_resolution){
 		div.innerHTML = '<img src="'+ node.images.low_resolution.url +'" onerror="imgError(this)"/>';
 		user.innerHTML = '<div class="user-holder"><div class="instagram-actualname">' + '</div><div class="instagram-username">@' +  node.user.username + '</p><div class="icon-instagram_logo"/></div>';
 		// console.log(node);
@@ -152,12 +164,17 @@ console.log(stream2);
 		div.className = className;
 		div.appendChild(user);
 	}else{
-
+		console.log("not instagram");
 	}
+		console.log(div);
 		return div;
 	}
 
 	function createTwitterNode(node, className, idName) {
+		// console.log(node);
+		// console.log(className);
+		// console.log(idName);
+
 		var div = document.createElement('div');
 		var html = '';	// HTML text holder.
 		var hashtag_link;
@@ -165,17 +182,13 @@ console.log(stream2);
 		var hashtag_array = [];
 		var twitterPic, avatar_url;
 		
-			// console.log(node);
-			// console.log(node.entities.media[0].media_url);
+	
 			// var div = document.createElement('div');
 			// var html = '';	// HTML text holder.
 			twitterPic = node.entities.media[0].media_url;
-			// console.log("******************");
 			// console.log(twitterPic);
 			// console.log(twitter_array.length);
-			// var hashtag_link;
-			// var hashtag_text;
-			// var hashtag_array = [];
+	
 			avatar_url = node.user.profile_image_url;	// get user avatar.
 			// console.log(avatar_url);
 			avatar_url = avatar_url.replace("_normal", avatar_size); // replace the image size if necessary.
@@ -231,7 +244,7 @@ console.log(stream2);
 			
 			
 			// div.innerHTML = html;	// add html to div
-	
+		// console.log(div);
 		return div;
 
 	}
@@ -321,15 +334,20 @@ console.log(stream2);
 			if (i_twitter >= twitter_array.length) {
 				i_twitter = 0;
 			}
-			console.log(instagram_array[i_instagram]);
+
+			// console.log(instagram_array[i_instagram]);
+			// console.log(instagram_array);
 			if(instagram_array[i_instagram].images.low_resolution) {
 				
 				instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
+				console.log(instagram);
 				$(stream).append(instagram);
 			}
 
 			if ( i === (expected_content%2) + 7) {
+
 			// Replace this section with dedicated hashtag node if required
+			// console.log(twitter_array[i_twitter]);
 				if(twitter_array[i_twitter].entities.media){
 					twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
 				
@@ -338,10 +356,10 @@ console.log(stream2);
 			}
 
 			if(twitter_array[i_twitter].entities.media){
-					twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
+				twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
 				
 				$(stream).append(twitter);
-				} 
+			} 
 
 			i_instagram++;
 			i_twitter++;
@@ -352,11 +370,11 @@ console.log(stream2);
 
 
 	function updateSlide(position, type) {
-		console.log("updating index");
-		console.log(type);
-		console.log(position);
+		// console.log("updating index");
+		// console.log(type);
+		// console.log(position);
 		if (type) {
-			// console.log("herealot");
+		// console.log(type);
 		// if (type == 1) {
 			// instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
 			
@@ -368,17 +386,18 @@ console.log(stream2);
 			$('#stream2 .photo').eq(position).removeClass('fade-in');
 
 			// console.log(instagram_array[update_index1]);
-			// if(instagram_array[update_index1].images.low_resolution) {
+			if(instagram_array[update_index1].images.low_resolution) {
 				$('#stream .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
 
 				$('#stream2 .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
 				
 				update_index1++;
-			// }
+			}
 			$('#stream .photo').eq(position).addClass('fade-in');
 			$('#stream2 .photo').eq(position).addClass('fade-in');
 
 		} else {
+			// console.log("hit");
 		
 			if (update_index2 >= twitter_array.length) {
 				update_index2 = 0;
@@ -386,20 +405,23 @@ console.log(stream2);
 
 			$('#stream .tweet').eq(position).removeClass('fade-in');
 			$('#stream2 .tweet').eq(position).removeClass('fade-in');
-
-		
-			// if(twitter_array[update_index2].entities.media){
+			$('#stream .twitter_Pic').eq(position).removeClass('fade-in');//To animate fade-in for twitter images
+			$('#stream2 .twitter_Pic').eq(position).removeClass('fade-in');//To animate fade-in for twitter images
+			// console.log(twitter_array[update_index2]);
+			if(twitter_array[update_index2].entities.media){
 				
 				$('#stream .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
 				$('#stream2 .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
 				update_index2++;
-			// }
-	
+			}
+		
 			$('#stream.tweet').eq(position).addClass('fade-in');
 			$('#stream2.tweet').eq(position).addClass('fade-in');
+			$('#stream .twitter_Pic').eq(position).addClass('fade-in');//To animate fade-in for twitter images
+			$('#stream2 .twitter_Pic').eq(position).addClass('fade-in');//To animate fade-in for twitter images
 		}
 
-		console.log('updated');
+		// console.log('updated');
 		// console.log("1: " + update_index1);
 		// console.log("2: " + update_index2);
 		// console.log(position);
@@ -440,18 +462,18 @@ console.log(stream2);
 
 	// window.setInterval(function(){
 	// 	// var position = Math.floor((Math.random() * expected_content));
-	// 	var node = Math.round((Math.random() * 2));
+	// 	var nodeStream = Math.round((Math.random() * 2));
 	// 	var chance = Math.round((Math.random() * 2));
 	// 	var numAddMin = Math.round((Math.random() * 2));
 	// 	var newPosition;
 
 	// 	if(chance == 1) {
 	// 		var newPosition = (expected_content / 2) + numAddMin;
-	// 	} else {
+	// 	} else if(chance == 2) {
 	// 		var newPosition = (expected_content / 2) - numAddMin;
 	// 	}
 
-	// 	updateSlide(newPosition, node);
+	// 	updateSlide(newPosition, nodeStream);
 	// }, 5000);
 
 
