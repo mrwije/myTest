@@ -1,4 +1,4 @@
-//Twitter and Instagram are updating but slow. Fade in for twitter pics semi functional
+//Instagram is updating but slow. Twitter seems to be not updating images. Fade in for twitter pics semi functional
 var instagram_array = [];
 var twitter_array = [];
 // console.log(stream);
@@ -16,11 +16,11 @@ var twitter_array = [];
 	var twitter = false;
 
 	var content_limit =  100;
-	var expected_content = 7;	// tied to css, change the css for proper display
+	var expected_content = 10;	// tied to css, change the css for proper display
 
 
-	var update_index1 = 7;
-	var update_index2 = 7;
+	var update_index1 = 10;
+	var update_index2 = 10;
 
 	// populateArray(instagram_array, expected_content);
 	// populateArray(twitter_array, expected_content);
@@ -45,7 +45,7 @@ var twitter_array = [];
 		if ( index_instagram >= content_limit ) {
 			index_instagram = 0;
 		}
-	
+		// console.log(status.network);
 		if ( status.network === 'twitter') {
 
 			if ( seconds <= new Date(status.created_at).getTime()/1000 ) { 
@@ -75,12 +75,11 @@ var twitter_array = [];
 				
 				// console.log('less than a week');
 				twitter_array[index_twitter] = status;
-				// console.log(twitter_array[index_twitter]);
+				console.log(twitter_array[index_twitter]);
 				index_twitter++;
 				// twitter_array[index_twitter] = status;
 				// index_twitter++;
-				
-
+				// console.log(twitter_array.length);		
 			}				
 			
 		} else if(status.network === "instagram"){
@@ -97,6 +96,8 @@ var twitter_array = [];
 			}
 
 			
+		} else {
+			console.log("not a proper network field");
 		}
 		
 		if (evt_i) {
@@ -105,6 +106,8 @@ var twitter_array = [];
 			document.dispatchEvent(evt_i);
 
 		}
+
+
 
 	}).start();
 
@@ -130,6 +133,23 @@ var twitter_array = [];
 			evt_t.initEvent("twitterLoaded", true, true);
 			document.dispatchEvent(evt_t);
 		}
+
+
+		//Adding instagram Start****************************
+		// if (index_instagram === content_limit) {
+		// 	index_instagram = 0;
+		// }
+
+		// if ( seconds <= status.created_time) { 
+		// 	instagram_array[index_instagram] = status;
+		// 	index_instagram++;			
+		// }
+
+		// if (evt_i) {
+		// 	evt_i.initEvent("instagramLoaded", true, true);
+		// 	document.dispatchEvent(evt_i);
+		// }	
+		//Adding instagram End******************************
 
 	}).start();
 
@@ -166,7 +186,7 @@ var twitter_array = [];
 	}else{
 		console.log("not instagram");
 	}
-		console.log(div);
+		// console.log(div);
 		return div;
 	}
 
@@ -182,28 +202,27 @@ var twitter_array = [];
 		var hashtag_array = [];
 		var twitterPic, avatar_url;
 		
-	
+			$(div.innerHTML.empty(); //Empty the previous images before adding new ones.
 			// var div = document.createElement('div');
 			// var html = '';	// HTML text holder.
 			twitterPic = node.entities.media[0].media_url;
 			// console.log(twitterPic);
 			// console.log(twitter_array.length);
 	
-			avatar_url = node.user.profile_image_url;	// get user avatar.
-			// console.log(avatar_url);
-			avatar_url = avatar_url.replace("_normal", avatar_size); // replace the image size if necessary.
-			hashtag_array = node.entities.hashtags;	// get hashtags in the tweet.
+			// avatar_url = node.user.profile_image_url;	// get user avatar.
+			// avatar_url = avatar_url.replace("_normal", avatar_size); // replace the image size if necessary.
+			// hashtag_array = node.entities.hashtags;	// get hashtags in the tweet.
 			
-			for (l = 0; l < hashtag_array.length; l++) {
-			// Wrap each hashtag in .hashtag class.
-				hashtag_text = "#"+node.entities.hashtags[l].text;
-				hashtag_link = "<span class='hashtag'>#" + node.entities.hashtags[l].text+"</span>";
+			// for (l = 0; l < hashtag_array.length; l++) {
+			// // Wrap each hashtag in .hashtag class.
+			// 	hashtag_text = "#"+node.entities.hashtags[l].text;
+			// 	hashtag_link = "<span class='hashtag'>#" + node.entities.hashtags[l].text+"</span>";
 
-				node.text = node.text.replace(hashtag_text, hashtag_link);
-			}
+			// 	node.text = node.text.replace(hashtag_text, hashtag_link);
+			// }
 
 			// div.setAttribute('id', idName);
-			div.className = className;
+			// div.className = className;
 			html += '<div class="twitter_Pic"><img src ="'+ twitterPic +'"/></div>';
 			// html += '<a href="https://twitter.com/'+encodeURIComponent( node.user.screen_name )+'" class="avatar"><img src="'+avatar_url+'" /></a>';
 			// html += '<div class="actual_name">'+node.user.name+'</div>';	// real name
@@ -211,8 +230,8 @@ var twitter_array = [];
 			// html += '<p class="text">'+node.text;+'</p>';	// status text
 			// html += '<img class="logo" src="../../../../lib/img/twitter.png"/>';	// status text
 			html += '<div class="icon-twitter_logo"></div>';	// status text
-			
-			
+				
+			div.className = className;	
 			div.innerHTML = html;	// add html to div
 		
 			// var div = document.createElement('div');
@@ -250,6 +269,7 @@ var twitter_array = [];
 	}
 
 	function createNode (className){//not called 
+		console.log("createNode");
 		var div = document.createElement('div');
 
 		div.innerHTML = '<img src="img/GenericSB.jpg" onerror="imgError(this)"/>';
@@ -259,62 +279,12 @@ var twitter_array = [];
 	}
 
 	function populateArray(array, index) {//not called
+		console.log("populateArray");
 		for (var i = 0; i < index; i++) {
 			array[i] = null;
 		}
 	}
-	// function slide(stream)
-	// 	// console.log(stream);
-	// 	var i = 0;
-	// 	var j = 0;
 
-	// 	var i_instagram = 0;
-	// 	var i_twitter = 0;
-
-	// 	var instagram;
-	// 	var twitter;
-
-	// 	for (i = 0; i < expected_content; i++) {
-	// 		if (i_instagram >= instagram_array.length) {
-	// 			i_instagram = 0;
-	// 		}
-
-	// 		if (i_twitter >= twitter_array.length) {
-	// 			i_twitter = 0;
-	// 		}
-	// 		// console.log(instagram_array[i_instagram]);
-	// 		instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
-	// 		$(stream).append(instagram);
-	// 		if ($(window).width() < 1920) {		
-	// 			if ( i === (expected_content%2) + 4) {
-	// 				// Replace this section with dedicated hashtag node if required
-	// 				twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-	// 				$(stream).append(twitter);
-	// 			}
-
-	// 			twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-	// 			$(stream).append(twitter);
-
-	// 			i_instagram++;
-	// 			i_twitter++;
-	// 		} else if(($(window).width() >= 1920)) {
-	// 			if ( i === (expected_content%2) + 7 ) {
-	// 				// Replace this section with dedicated hashtag node if required
-	// 				twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-	// 				$(stream).append(twitter);
-	// 			}
-
-	// 			twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-	// 			$(stream).append(twitter);
-
-	// 			i_instagram++;
-	// 			i_twitter++;
-	// 		}
-
-	// 	}
-
-	// 	$(stream).animate({opacity: 1}, 1000);
-	// }
 
 	function slide(stream) {
 		var i = 0;
@@ -331,35 +301,44 @@ var twitter_array = [];
 				i_instagram = 0;
 			}
 
+			// console.log(i_twitter);
+			// console.log(twitter_array.length);
 			if (i_twitter >= twitter_array.length) {
 				i_twitter = 0;
 			}
 
 			// console.log(instagram_array[i_instagram]);
 			// console.log(instagram_array);
-			if(instagram_array[i_instagram].images.low_resolution) {
-				
-				instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
-				console.log(instagram);
-				$(stream).append(instagram);
+			if(instagram_array.length != 0 && instagram_array[i_instagram] !== null && instagram_array[i_instagram] !== 'undefined') {
+				if(instagram_array[i_instagram].images.low_resolution) {
+					
+					instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
+					$(stream).append(instagram);
+				}
 			}
 
 			if ( i === (expected_content%2) + 7) {
 
 			// Replace this section with dedicated hashtag node if required
 			// console.log(twitter_array[i_twitter]);
-				if(twitter_array[i_twitter].entities.media){
-					twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-				
-				$(stream).append(twitter);
-				} 
+			if(twitter_array.length != 0 && twitter_array[i_twitter] !== null && twitter_array[i_twitter] !== 'undefined') {
+					if(twitter_array[i_twitter].entities.media){
+						twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
+					
+					$(stream).append(twitter);
+					} 
+				}
 			}
 
-			if(twitter_array[i_twitter].entities.media){
-				twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-				
-				$(stream).append(twitter);
-			} 
+			if(twitter_array.length != 0 && twitter_array[i_twitter] !== null && twitter_array[i_twitter] !== 'undefined') {
+				// console.log("errorCheck");
+				// console.log(twitter_array[i_twitter]);
+				if(twitter_array[i_twitter].entities.media){
+					twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
+					
+					$(stream).append(twitter);
+				} 
+			}
 
 			i_instagram++;
 			i_twitter++;
@@ -371,8 +350,8 @@ var twitter_array = [];
 
 	function updateSlide(position, type) {
 		// console.log("updating index");
-		// console.log(type);
-		// console.log(position);
+		// console.log("type " + type);
+		// console.log("position " + position);
 		if (type) {
 		// console.log(type);
 		// if (type == 1) {
@@ -386,13 +365,16 @@ var twitter_array = [];
 			$('#stream2 .photo').eq(position).removeClass('fade-in');
 
 			// console.log(instagram_array[update_index1]);
-			if(instagram_array[update_index1].images.low_resolution) {
-				$('#stream .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
+			if(instagram_array.length != 0 && instagram_array[update_index1] !== null && instagram_array[update_index1] !== 'undefined') {
+				if(instagram_array[update_index1].images.low_resolution) {
+					$('#stream .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
 
-				$('#stream2 .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
-				
-				update_index1++;
+					$('#stream2 .photo').eq(position).html(createInstagramNode(instagram_array[update_index1], 'photo'));
+					
+					update_index1++;
+				}
 			}
+
 			$('#stream .photo').eq(position).addClass('fade-in');
 			$('#stream2 .photo').eq(position).addClass('fade-in');
 
@@ -408,13 +390,15 @@ var twitter_array = [];
 			$('#stream .twitter_Pic').eq(position).removeClass('fade-in');//To animate fade-in for twitter images
 			$('#stream2 .twitter_Pic').eq(position).removeClass('fade-in');//To animate fade-in for twitter images
 			// console.log(twitter_array[update_index2]);
-			if(twitter_array[update_index2].entities.media){
-				
-				$('#stream .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
-				$('#stream2 .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
-				update_index2++;
+			if(twitter_array.length != 0 && twitter_array[update_index2] !== null && twitter_array[update_index2] !== 'undefined') {
+				if(twitter_array[update_index2].entities.media){
+					
+					$('#stream .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
+					$('#stream2 .tweet').eq(position).html(createTwitterNode(twitter_array[update_index2], 'tweet'));
+					update_index2++;
+				}
 			}
-		
+
 			$('#stream.tweet').eq(position).addClass('fade-in');
 			$('#stream2.tweet').eq(position).addClass('fade-in');
 			$('#stream .twitter_Pic').eq(position).addClass('fade-in');//To animate fade-in for twitter images
@@ -465,14 +449,18 @@ var twitter_array = [];
 	// 	var nodeStream = Math.round((Math.random() * 2));
 	// 	var chance = Math.round((Math.random() * 2));
 	// 	var numAddMin = Math.round((Math.random() * 2));
+	// 	var adjusted_expected_content = Math.round(expected_content / 2);
 	// 	var newPosition;
 
 	// 	if(chance == 1) {
-	// 		var newPosition = (expected_content / 2) + numAddMin;
+	// 		newPosition = adjusted_expected_content + numAddMin;
+	// 		console.log(newPosition);
 	// 	} else if(chance == 2) {
-	// 		var newPosition = (expected_content / 2) - numAddMin;
+	// 		newPosition = adjusted_expected_content - numAddMin;
+	// 		console.log(newPosition);
 	// 	}
 
+	// 	// console.log(newPosition);
 	// 	updateSlide(newPosition, nodeStream);
 	// }, 5000);
 
