@@ -311,7 +311,7 @@ var twitter_array = [];
 			// console.log(instagram_array);
 			if(instagram_array.length != 0 && instagram_array[i_instagram] !== null && instagram_array[i_instagram] !== 'undefined') {
 				if(instagram_array[i_instagram].images.low_resolution) {
-					
+					$(."photo").empty();//might need to give a uniqe id to target individual photo.
 					instagram = createInstagramNode(instagram_array[i_instagram], 'photo', 'image'+i);
 					$(stream).append(instagram);
 				}
@@ -323,9 +323,9 @@ var twitter_array = [];
 			// console.log(twitter_array[i_twitter]);
 			if(twitter_array.length != 0 && twitter_array[i_twitter] !== null && twitter_array[i_twitter] !== 'undefined') {
 					if(twitter_array[i_twitter].entities.media){
+						$( ".tweet" ).empty();//might need to give a unique id to target individual tweet. 
 						twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-					
-					$(stream).append(twitter);
+						$(stream).append(twitter);
 					} 
 				}
 			}
@@ -334,8 +334,8 @@ var twitter_array = [];
 				// console.log("errorCheck");
 				// console.log(twitter_array[i_twitter]);
 				if(twitter_array[i_twitter].entities.media){
+					$( ".tweet" ).empty();//might need to give a unique id to target individual tweet.
 					twitter = createTwitterNode(twitter_array[i_twitter], 'tweet', 'tweet'+i);
-					
 					$(stream).append(twitter);
 				} 
 			}
