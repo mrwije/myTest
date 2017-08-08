@@ -25,3 +25,24 @@ td a {
     color: #000;
     text-decoration: underline;
 }
+
+#parentDiv {
+  height: 720px;
+  width: 1100px;
+  background-color: #000;
+  opacity: 0.5;
+}
+
+.user-holder {
+  height: 350px;
+  width: 350px;
+  background-color: red;
+  float: left;
+}
+
+.new {
+  height: 350px;
+  width: 350px;
+  background-color: red;
+  float: left;
+}
